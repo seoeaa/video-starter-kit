@@ -21,9 +21,9 @@ export function TimelineRuler({
           return (
             <div key={index} className="flex-grow flex flex-col">
               {isMajorTick && (
-                <div className="text-muted-foreground text-sm tabular-nums h-full text-center mt-1">
+                <div className="text-muted-foreground text-base tabular-nums h-full text-center mt-1">
                   {(index / 10).toFixed(0)}s
-                  <div className="h-full max-h-full w-px bg-border/50 mx-auto mt-1 mb-4"></div>
+                  <div className="h-full max-h-full w-0.5 bg-border/50 mx-auto mt-1 mb-4"></div>
                 </div>
               )}
               {isMinorTick && !isMajorTick && (

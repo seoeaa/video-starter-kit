@@ -103,7 +103,7 @@ export default function BottomBar() {
         ({
           id: "video",
           type: "video",
-          label: "Video",
+          label: "Видео",
           locked: true,
           keyframes: [],
           projectId: projectId,
@@ -113,7 +113,7 @@ export default function BottomBar() {
         ({
           id: "music",
           type: "music",
-          label: "Music",
+          label: "Музыка",
           locked: true,
           keyframes: [],
           projectId: projectId,
@@ -123,7 +123,7 @@ export default function BottomBar() {
         ({
           id: "voiceover",
           type: "voiceover",
-          label: "Voiceover",
+          label: "Озвучка",
           locked: true,
           keyframes: [],
           projectId: projectId,
@@ -143,18 +143,21 @@ export default function BottomBar() {
 
   return (
     <div className="border-t pb-2 border-border flex flex-col bg-background-light ">
-      <div className="border-b border-border bg-background-dark px-2 flex flex-row gap-8 py-2 justify-between items-center flex-1">
+      <div className="border-b border-border bg-background-dark px-2 flex flex-row py-2 items-center flex-1">
         <div className="h-full flex flex-col justify-center px-4 bg-muted/50 rounded-md font-mono cursor-default select-none shadow-inner">
           <div className="flex flex-row items-baseline font-thin tabular-nums">
-            <span className="text-muted-foreground">00:</span>
-            <span>{formattedTimestamp}</span>
-            <span className="text-muted-foreground/50 mx-2">/</span>
-            <span className="text-sm opacity-50">
+            <span className="text-muted-foreground text-lg">00:</span>
+            <span className="text-lg">{formattedTimestamp}</span>
+            <span className="text-muted-foreground/50 mx-2 text-lg">/</span>
+            <span className="text-base opacity-50">
               <span className="text-muted-foreground">00:</span>30.00
             </span>
           </div>
         </div>
-        <VideoControls />
+        <div className="flex-1 flex justify-center">
+          <VideoControls />
+        </div>
+        <div className="w-[150px]"></div> {/* Пустой блок для баланса */}
       </div>
       <div
         className={cn(

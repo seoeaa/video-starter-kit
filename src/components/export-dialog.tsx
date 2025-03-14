@@ -116,12 +116,12 @@ export function ExportDialog({ onOpenChange, ...props }: ExportDialogProps) {
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <FilmIcon className="w-6 h-6 opacity-50" />
-            Export video
+            Экспорт видео
           </DialogTitle>
           <DialogDescription />
         </DialogHeader>
         <div className="text-muted-foreground">
-          <p>This may take a while, sit back and relax.</p>
+          <p>Это может занять некоторое время, расслабьтесь и подождите.</p>
         </div>
         <div
           className={cn(
@@ -153,7 +153,7 @@ export function ExportDialog({ onOpenChange, ...props }: ExportDialogProps) {
           <div className="flex flex-row gap-2 items-center">
             <Input
               value={exportVideo.data?.video_url ?? ""}
-              placeholder="Video URL..."
+              placeholder="URL видео..."
               readOnly
               className="text-muted-foreground"
             />
@@ -176,7 +176,7 @@ export function ExportDialog({ onOpenChange, ...props }: ExportDialogProps) {
             disabled={actionsDisabled || !exportVideo.data}
           >
             <ShareIcon className="w-4 h-4 opacity-50" />
-            Share
+            Поделиться
           </Button>
           <Button
             variant="secondary"
@@ -186,14 +186,14 @@ export function ExportDialog({ onOpenChange, ...props }: ExportDialogProps) {
           >
             <a href={exportVideo.data?.video_url ?? "#"} download>
               <DownloadIcon className="w-4 h-4" />
-              Download
+              Скачать
             </a>
           </Button>
           <Button
             onClick={() => exportVideo.mutate()}
             disabled={actionsDisabled}
           >
-            Export
+            Экспорт
           </Button>
         </DialogFooter>
       </DialogContent>

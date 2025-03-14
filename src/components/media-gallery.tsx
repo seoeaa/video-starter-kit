@@ -235,15 +235,15 @@ export function MediaGallerySheet({
           onPointerDownOutside={preventClose as any}
         >
           <SheetHeader>
-            <SheetTitle>Media Gallery</SheetTitle>
+            <SheetTitle>Медиа Галерея</SheetTitle>
             <SheetDescription className="sr-only">
-              The b-roll for your video composition
+              Дополнительные материалы для вашей видеокомпозиции
             </SheetDescription>
           </SheetHeader>
           <div className="flex h-full max-h-full flex-1 flex-col gap-8 overflow-y-hidden">
             <div className="flex flex-col gap-4">
               <p className="text-muted-foreground">
-                {prompt ?? <span className="italic">No description</span>}
+              {prompt ?? <span className="italic">Нет описания</span>}
               </p>
               <div></div>
             </div>
@@ -255,7 +255,7 @@ export function MediaGallerySheet({
                   disabled={deleteMedia.isPending}
                 >
                   <FilmIcon className="w-4 h-4 opacity-50" />
-                  Make Video
+                  Создать видео
                 </Button>
               )}
               <Button
@@ -264,7 +264,7 @@ export function MediaGallerySheet({
                 disabled={deleteMedia.isPending}
               >
                 <ImagesIcon className="w-4 h-4 opacity-50" />
-                Re-run
+                Повторить
               </Button>
               <Button
                 variant="secondary"
@@ -276,14 +276,14 @@ export function MediaGallerySheet({
                 ) : (
                   <TrashIcon className="w-4 h-4 opacity-50" />
                 )}
-                Delete
+                Удалить
               </Button>
             </div>
             <div className="flex-1 flex flex-col gap-2 justify-end">
-              <MediaPropertyItem label="Media URL" value={mediaUrl ?? "n/a"} />
+              <MediaPropertyItem label="URL медиа" value={mediaUrl ?? "н/д"} />
               <MediaPropertyItem
-                label="Model (fal endpoint)"
-                value={selectedMedia.endpointId ?? "n/a"}
+                label="Модель (fal endpoint)"
+                value={selectedMedia.endpointId ?? "н/д"}
               >
                 <a
                   href={`https://fal.ai/models/${selectedMedia.endpointId}`}
@@ -294,12 +294,12 @@ export function MediaGallerySheet({
                 </a>
               </MediaPropertyItem>
               <MediaPropertyItem
-                label="Status"
-                value={selectedMedia.status ?? "n/a"}
+                label="Статус"
+                value={selectedMedia.status ?? "н/д"}
               />
               <MediaPropertyItem
-                label="Request ID"
-                value={selectedMedia.requestId ?? "n/a"}
+                label="ID запроса"
+                value={selectedMedia.requestId ?? "н/д"}
               >
                 <code>{selectedMedia.requestId}</code>
               </MediaPropertyItem>

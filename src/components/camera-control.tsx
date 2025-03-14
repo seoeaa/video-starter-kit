@@ -65,7 +65,7 @@ const CameraMovement = ({
         onClick={() => setOpen(!open)}
       >
         <div className="flex items-center gap-2">
-          <span className="text-muted-foreground">Camera Movement</span>
+          <span className="text-muted-foreground">Движение камеры</span>
         </div>
         <Button variant="ghost" size="icon" className="text-white">
           {open ? (
@@ -93,7 +93,7 @@ const CameraMovement = ({
           {/* Controls */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <div className="text-muted-foreground">Camera Control</div>
+              <div className="text-muted-foreground">Управление камерой</div>
             </div>
 
             <div className="flex items-center gap-4">
@@ -104,16 +104,16 @@ const CameraMovement = ({
                 }}
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select movement" />
+                  <SelectValue placeholder="Выберите движение" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="default">Default</SelectItem>
-                  <SelectItem value="horizontal">Horizontal</SelectItem>
-                  <SelectItem value="vertical">Vertical</SelectItem>
-                  <SelectItem value="pan">Pan</SelectItem>
-                  <SelectItem value="tilt">Tilt</SelectItem>
-                  <SelectItem value="roll">Roll</SelectItem>
-                  <SelectItem value="zoom">Zoom</SelectItem>
+                  <SelectItem value="default">По умолчанию</SelectItem>
+                  <SelectItem value="horizontal">Горизонтально</SelectItem>
+                  <SelectItem value="vertical">Вертикально</SelectItem>
+                  <SelectItem value="pan">Панорама</SelectItem>
+                  <SelectItem value="tilt">Наклон</SelectItem>
+                  <SelectItem value="roll">Поворот</SelectItem>
+                  <SelectItem value="zoom">Масштаб</SelectItem>
                 </SelectContent>
               </Select>
 
@@ -121,7 +121,7 @@ const CameraMovement = ({
                 variant="secondary"
                 onClick={() => handleChange("movement", "default")}
               >
-                Reset
+                Сбросить
               </Button>
             </div>
 

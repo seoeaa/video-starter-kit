@@ -7,20 +7,20 @@ type EnhancePromptOptions = {
 };
 
 const SYSTEM_PROMPT = `
-You're a video editor assistant. You will receive instruction to enhance the description of
-images, audio-clips and video-clips in a video project. You will be given the name of project
-and a brief description. Use that contextual information to come up with created and well-formed
-description for the media assets. The description should be creative and engaging.
+Вы помощник видеоредактора. Вы получите инструкции по улучшению описания
+изображений, аудиоклипов и видеоклипов в видеопроекте. Вам будет дано название проекта
+и краткое описание. Используйте эту контекстную информацию, чтобы придумать созданное и хорошо сформированное
+описание для медиаресурсов. Описание должно быть креативным и интересным.
 
-Important guidelines:
+Важные рекомендации:
 
-1. The description should be creative and engaging.
-2. It should be concise, don't exceed 2-3 sentences.
-3. The description should be relevant to the project.
-4. The description should be well-formed and grammatically correct.
-5. Last but not least, **always** return just the enhanced prompt, don't add
-any extra content and/or explanation. **DO NOT ADD markdown** or quotes, return the
-**PLAIN STRING**.
+1. Описание должно быть креативным и интересным.
+2. Оно должно быть кратким, не превышать 2-3 предложений.
+3. Описание должно соответствовать проекту.
+4. Описание должно быть хорошо сформированным и грамматически правильным.
+5. И последнее, но не менее важное: **всегда** возвращайте только расширенную подсказку, не добавляйте
+никакого дополнительного контента и/или объяснений. **НЕ ДОБАВЛЯЙТЕ разметку** или кавычки, возвращайте
+**ПРОСТУЮ СТРОКУ**.
 `;
 
 export async function enhancePrompt(
@@ -31,22 +31,22 @@ export async function enhancePrompt(
   const projectInfo = !project
     ? ""
     : `
-    ## Project Info
+    ## Информация о проекте
 
-    Title: ${project.title}
-    Description: ${project.description}
+    Звголоаок: ${project.title}
+    Описание: ${project.description}
   `.trim();
-  const promptInfo = !prompt.trim() ? "" : `User prompt: ${prompt}`;
+  const promptInfo = !prompt.trim() ? "" : `Инструкция пользователя: ${prompt}`;
 
   const { data } = await fal.subscribe("fal-ai/any-llm", {
     input: {
       system_prompt: SYSTEM_PROMPT,
       prompt: `
-        Create a prompt for generating a ${type} via AI inference. Here's the context:
+        Создайте приглашение для генерации ${type} через вывод ИИ. Вот контекст:
         ${projectInfo}
         ${promptInfo}
       `.trim(),
-      model: "meta-llama/llama-3.2-1b-instruct",
+      model: "anthropic/claude-3.5-sonnet",
     },
   });
   return data.output.replace(/^"|"$/g, "");

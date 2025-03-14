@@ -84,6 +84,17 @@ export function resolveMediaUrl(item: MediaItem | undefined): string | null {
   }
   const data = item.output;
   if (!data) return null;
+  
+  // Обработка результата от sync.so или других API
+  if ("video" in data && typeof data.video === "object" && data.video !== null && "url" in data.video) {
+    const videoUrl = data.video.url;
+    if (typeof videoUrl === "string") {
+      // Теперь мы получаем прямую ссылку на видеофайл в компоненте media-panel.tsx,
+      // поэтому просто возвращаем URL, который уже должен быть прямой ссылкой на видеофайл
+      return videoUrl;
+    }
+  }
+  
   if (
     "images" in data &&
     Array.isArray(data.images) &&

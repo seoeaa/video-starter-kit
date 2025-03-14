@@ -144,7 +144,15 @@ const VideoTrackSequence: React.FC<TrackSequenceProps> = ({
             durationInFrames={durationInFrames}
             premountFor={3000}
           >
-            {media.mediaType === "video" && <Video src={mediaUrl} />}
+            {media.mediaType === "video" && (
+              <Video 
+                src={mediaUrl} 
+                onError={(err) => {
+                  console.error("Ошибка воспроизведения видео:", err);
+                  // Продолжаем воспроизведение без остановки всего приложения
+                }}
+              />
+            )}
             {media.mediaType === "image" && (
               <Img src={mediaUrl} style={{ objectFit: "cover" }} />
             )}
@@ -178,7 +186,13 @@ const AudioTrackSequence: React.FC<TrackSequenceProps> = ({
             durationInFrames={durationInFrames}
             premountFor={3000}
           >
-            <Audio src={audioUrl} />
+            <Audio 
+              src={audioUrl} 
+              onError={(err) => {
+                console.error("Ошибка воспроизведения аудио:", err);
+                // Продолжаем воспроизведение без остановки всего приложения
+              }}
+            />
           </Sequence>
         );
       })}
@@ -290,7 +304,7 @@ export default function VideoPreview() {
         disabled={isCompositionLoading || tracks.length === 0}
       >
         <DownloadIcon className="w-4 h-4" />
-        Export
+        Экспорт
       </Button>
       <div className="w-full h-full flex items-center justify-center mx-6  max-h-[calc(100vh-25rem)]">
         <Player

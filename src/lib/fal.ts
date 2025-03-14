@@ -7,6 +7,63 @@ export const fal = createFalClient({
   proxyUrl: "/api/fal",
 });
 
+/**
+ * Тип ответа от API синхронизации звука и видео
+ */
+export interface LipSyncResponse {
+  video: {
+    url: string;
+  };
+}
+
+/**
+ * Функция для синхронизации звука и видео с использованием модели lipsync
+ * @param videoUrl URL видео файла
+ * @param audioUrl URL аудио файла
+ * @param syncMode Режим синхронизации (по умолчанию "cut_off")
+ * @returns Объект с URL синхронизированного видео
+ */
+export async function syncLipSync(
+  videoUrl: string,
+  audioUrl: string,
+  syncMode: "cut_off" | "loop" | "pad" = "cut_off"
+): Promise<LipSyncResponse> {
+  try {
+    console.log("Отправка запроса на синхронизацию:", { videoUrl, audioUrl, syncMode });
+    
+    // Используем правильный эндпоинт fal-ai/sync-lipsync с правильным форматом запроса
+    const response = await fal.subscribe("fal-ai/sync-lipsync", {
+      input: {
+        model: "lipsync-1.9.0-beta",
+        video_url: videoUrl,
+        audio_url: audioUrl,
+        sync_mode: syncMode
+      },
+      pollInterval: 1000,
+      logs: true,
+    });
+    
+    console.log("Ответ от API:", response);
+    
+    // Создаем объект нужного формата
+    // @ts-ignore - игнорируем ошибку типа, так как мы знаем структуру ответа
+    const syncedVideoUrl = response?.video?.url;
+    
+    if (!syncedVideoUrl) {
+      throw new Error("Не удалось получить URL синхронизированного видео");
+    }
+    
+    return {
+      video: {
+        url: syncedVideoUrl
+      }
+    };
+  } catch (error) {
+    console.error("Ошибка при синхронизации звука и видео:", error);
+    throw error;
+  }
+}
+
 export type InputAsset =
   | "video"
   | "image"
@@ -76,7 +133,15 @@ export const AVAILABLE_ENDPOINTS: ApiInfo[] = [
   },
   {
     endpointId: "fal-ai/kling-video/v1.5/pro",
-    label: "Kling 1.5 Pro",
+    label: "AIQA 1.5 Pro",
+    description: "High quality video",
+    cost: "",
+    category: "video",
+    inputAsset: ["image"],
+  },
+  {
+    endpointId: "fal-ai/kling-video/v1.6/pro",
+    label: "AIQA 1.6 Pro",
     description: "High quality video",
     cost: "",
     category: "video",
@@ -132,12 +197,41 @@ export const AVAILABLE_ENDPOINTS: ApiInfo[] = [
     category: "video",
   },
   {
+    endpointId: "fal-ai/sync-lipsync",
+    label: "Lipsync 1.9.0 Beta",
+    description:
+      "Синхронизация звука и видео с улучшенной точностью и качеством.",
+    cost: "",
+    inputAsset: ["video", "audio"],
+    category: "video",
+  },
+  {
     endpointId: "fal-ai/stable-audio",
     label: "Stable Audio",
     description: "Stable Diffusion music creation with high-quality tracks",
     cost: "",
     category: "music",
   },
+
+
+
+
+  {
+    endpointId: "fal-ai/elevenlabs/tts/turbo-v2.5",
+    label: "elevenlabs",
+    description: "Fluent and faithful speech with flow matching",
+    cost: "",
+    category: "voiceover",
+    inputMap: {
+      prompt: "text",
+    },
+    initialInput: {
+      voice: "Brian",
+      stability: 0.5,
+      similarity_boost: 0.75
+    },
+  },
+
   {
     endpointId: "fal-ai/playht/tts/v3",
     label: "PlayHT TTS v3",

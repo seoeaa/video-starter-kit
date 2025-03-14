@@ -9,7 +9,7 @@ import {
   useProjectId,
   useVideoProjectStore,
 } from "@/data/store";
-import { AVAILABLE_ENDPOINTS, type InputAsset } from "@/lib/fal";
+import { AVAILABLE_ENDPOINTS, type InputAsset, syncLipSync } from "@/lib/fal";
 import {
   ImageIcon,
   MicIcon,
@@ -51,7 +51,8 @@ import {
 import { enhancePrompt } from "@/lib/prompt";
 import { WithTooltip } from "./ui/tooltip";
 import { Label } from "./ui/label";
-import { VoiceSelector } from "./playht/voice-selector";
+import { VoiceSelector as PlayHTVoiceSelector } from "./playht/voice-selector";
+import { VoiceSelector as ElevenLabsVoiceSelector } from "./elevenlabs/voice-selector";
 import { LoadingIcon } from "./ui/icons";
 import { getMediaMetadata } from "@/lib/ffmpeg";
 import CameraMovement from "./camera-control";
@@ -219,7 +220,9 @@ export default function RightPanel({
     aspect_ratio: videoAspectRatio,
     seconds_total: generateData.duration ?? undefined,
     voice:
-      endpointId === "fal-ai/playht/tts/v3" ? generateData.voice : undefined,
+      endpointId === "fal-ai/playht/tts/v3" || endpointId === "fal-ai/elevenlabs/tts/turbo-v2.5" 
+        ? generateData.voice 
+        : undefined,
     input:
       endpointId === "fal-ai/playht/tts/v3" ? generateData.prompt : undefined,
   };
@@ -387,7 +390,7 @@ export default function RightPanel({
       <div className="flex-1 p-4 flex flex-col gap-4 border-b border-border h-full overflow-hidden relative">
         <div className="flex flex-row items-center justify-between">
           <h2 className="text-sm text-muted-foreground font-semibold flex-1">
-            Generate Media
+            Создать медиа
           </h2>
           <Button
             variant="ghost"
@@ -409,7 +412,7 @@ export default function RightPanel({
               )}
             >
               <ImageIcon className="w-4 h-4 opacity-50" />
-              <span className="text-[10px]">Image</span>
+              <span className="text-[10px]">Изображение</span>
             </Button>
             <Button
               variant="ghost"
@@ -420,7 +423,7 @@ export default function RightPanel({
               )}
             >
               <VideoIcon className="w-4 h-4 opacity-50" />
-              <span className="text-[10px]">Video</span>
+              <span className="text-[10px]">Видео</span>
             </Button>
             <Button
               variant="ghost"
@@ -431,7 +434,7 @@ export default function RightPanel({
               )}
             >
               <MicIcon className="w-4 h-4 opacity-50" />
-              <span className="text-[10px]">Voiceover</span>
+              <span className="text-[10px]">Озвучка</span>
             </Button>
             <Button
               variant="ghost"
@@ -442,11 +445,11 @@ export default function RightPanel({
               )}
             >
               <MusicIcon className="w-4 h-4 opacity-50" />
-              <span className="text-[10px]">Music</span>
+              <span className="text-[10px]">Музыка</span>
             </Button>
           </div>
           <div className="flex flex-col gap-2 mt-2 justify-start font-medium text-base">
-            <div className="text-muted-foreground">Using</div>
+            <div className="text-muted-foreground">Используя</div>
             <ModelEndpointPicker
               mediaType={mediaType}
               value={endpointId}
@@ -470,7 +473,9 @@ export default function RightPanel({
               <div className="flex flex-col w-full" key={getAssetType(asset)}>
                 <div className="flex justify-between">
                   <h4 className="capitalize text-muted-foreground mb-2">
-                    {getAssetType(asset)} Reference
+                    {getAssetType(asset) === "image" ? "Изображение" : 
+                     getAssetType(asset) === "video" ? "Видео" : 
+                     getAssetType(asset) === "audio" ? "Аудио" : getAssetType(asset)} для ссылки
                   </h4>
                   {tab === `asset-${getAssetType(asset)}` && (
                     <Button
@@ -478,7 +483,7 @@ export default function RightPanel({
                       onClick={() => setTab("generation")}
                       size="sm"
                     >
-                      <ArrowLeft /> Back
+                      <ArrowLeft /> Назад
                     </Button>
                   )}
                 </div>
@@ -496,7 +501,7 @@ export default function RightPanel({
                           className="cursor-pointer min-h-[30px] flex flex-col items-center justify-center border border-dashed border-border rounded-md px-4"
                         >
                           <span className="text-muted-foreground text-xs text-center text-nowrap">
-                            Select
+                            Выбрать
                           </span>
                         </Button>
                         <Button
@@ -520,7 +525,7 @@ export default function RightPanel({
                               <LoaderCircleIcon className="w-4 h-4 opacity-50 animate-spin" />
                             ) : (
                               <span className="text-muted-foreground text-xs text-center text-nowrap">
-                                Upload
+                                Загрузить
                               </span>
                             )}
                           </label>
@@ -529,7 +534,7 @@ export default function RightPanel({
                     )}
                     {generateData[getAssetKey(asset)] && (
                       <div className="cursor-pointer overflow-hidden relative w-full flex flex-col items-center justify-center border border-dashed border-border rounded-md">
-                        <WithTooltip tooltip="Remove media">
+              <WithTooltip tooltip="Удалить медиа">
                           <button
                             type="button"
                             className="p-1 rounded hover:bg-black/50 absolute top-1 z-50 bg-black/80 right-1 group-hover:text-white"
@@ -582,12 +587,12 @@ export default function RightPanel({
           <div className="relative bg-border rounded-lg pb-10 placeholder:text-base w-full  resize-none">
             <Textarea
               className="text-base shadow-none focus:!ring-0 placeholder:text-base w-full h-32 resize-none"
-              placeholder="Imagine..."
+              placeholder="Напишите подсказку..."
               value={generateData.prompt}
               rows={3}
               onChange={(e) => setGenerateData({ prompt: e.target.value })}
             />
-            <WithTooltip tooltip="Enhance your prompt with AI-powered suggestions.">
+              <WithTooltip tooltip="Улучшите ваш запрос с помощью ИИ-подсказок.">
               <div className="absolute bottom-2 right-2">
                 <Button
                   variant="secondary"
@@ -600,7 +605,7 @@ export default function RightPanel({
                   ) : (
                     <WandSparklesIcon className="opacity-50" />
                   )}
-                  Enhance Prompt
+                  Улучшить запрос
                 </Button>
               </div>
             </WithTooltip>
@@ -634,35 +639,48 @@ export default function RightPanel({
                 }
               />
             )}
-            {mediaType === "music" && endpointId === "fal-ai/playht/tts/v3" && (
+            {/* Селектор длительности для музыки */}
+            {mediaType === "music" && (
+              <div className="flex flex-row items-center gap-1">
+                <Label>Длительность</Label>
+                <Input
+                  className="w-12 text-center tabular-nums [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  min={5}
+                  max={30}
+                  step={1}
+                  type="number"
+                  value={generateData.duration}
+                  onChange={(e) =>
+                    setGenerateData({
+                      duration: Number.parseInt(e.target.value),
+                    })
+                  }
+                />
+                <span>s</span>
+              </div>
+            )}
+            
+            {/* Селектор голоса для PlayHT */}
+            {endpointId === "fal-ai/playht/tts/v3" && (
               <div className="flex-1 flex flex-row gap-2">
-                {mediaType === "music" && (
-                  <div className="flex flex-row items-center gap-1">
-                    <Label>Duration</Label>
-                    <Input
-                      className="w-12 text-center tabular-nums [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                      min={5}
-                      max={30}
-                      step={1}
-                      type="number"
-                      value={generateData.duration}
-                      onChange={(e) =>
-                        setGenerateData({
-                          duration: Number.parseInt(e.target.value),
-                        })
-                      }
-                    />
-                    <span>s</span>
-                  </div>
-                )}
-                {endpointId === "fal-ai/playht/tts/v3" && (
-                  <VoiceSelector
-                    value={generateData.voice}
-                    onValueChange={(voice) => {
-                      setGenerateData({ voice });
-                    }}
-                  />
-                )}
+                <PlayHTVoiceSelector
+                  value={generateData.voice}
+                  onValueChange={(voice: string) => {
+                    setGenerateData({ voice });
+                  }}
+                />
+              </div>
+            )}
+            
+            {/* Селектор голоса для ElevenLabs */}
+            {endpointId === "fal-ai/elevenlabs/tts/turbo-v2.5" && (
+              <div className="flex-1 flex flex-row gap-2">
+                <ElevenLabsVoiceSelector
+                  value={generateData.voice}
+                  onValueChange={(voice: string) => {
+                    setGenerateData({ voice });
+                  }}
+                />
               </div>
             )}
             <div className="flex flex-row gap-2">
@@ -671,7 +689,7 @@ export default function RightPanel({
                 disabled={enhance.isPending || createJob.isPending}
                 onClick={handleOnGenerate}
               >
-                Generate
+                Создать
               </Button>
             </div>
           </div>

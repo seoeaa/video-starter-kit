@@ -17,6 +17,7 @@ export type GenerateData = {
   audio_url?: File | string | null;
   duration: number;
   voice: string;
+  syncedVideo?: string | null;
   [key: string]: any;
 };
 

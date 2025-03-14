@@ -156,8 +156,8 @@ export default function VideoFrameSelector({
             transform: "translateX(-50%)",
           }}
         >
-          <div className="h-6 w-0.5 bg-neutral-600"></div>
-          <span className="text-xs text-neutral-500">{i}</span>
+          <div className="h-7 w-0.5 bg-neutral-600"></div>
+          <span className="text-sm text-neutral-500">{i}</span>
         </div>,
       );
     }
@@ -212,13 +212,13 @@ export default function VideoFrameSelector({
         onClick={() => setOpen(!open)}
       >
         <div className="flex items-center gap-2">
-          <span className="text-muted-foreground">Select Image for Frames</span>
+          <span className="text-muted-foreground">Выберите изображение для кадров</span>
         </div>
         <Button variant="ghost" size="icon" className="text-white">
           {open ? (
-            <ChevronUp className="h-6 w-6" />
+            <ChevronUp className="h-7 w-7" />
           ) : (
-            <ChevronDown className="h-6 w-6" />
+            <ChevronDown className="h-7 w-7" />
           )}
         </Button>
       </div>
@@ -253,11 +253,11 @@ export default function VideoFrameSelector({
                 }}
                 onMouseDown={handlePlayheadDragStart}
               >
-                <span className="text-xs text-red-500 mt-1">
+                <span className="text-sm text-red-500 mt-1">
                   {currentFrame}
                 </span>
-                <div className="w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
-                  <GripVertical className="w-3 h-3 text-white" />
+                <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
+                  <GripVertical className="w-4 h-4 text-white" />
                 </div>
                 <div className="w-0.5 h-full bg-red-500"></div>
               </div>
@@ -303,7 +303,7 @@ export default function VideoFrameSelector({
                             removeImage(image.id);
                           }}
                         >
-                          <X size={12} />
+                          <X size={16} />
                         </Button>
                       </div>
                     </div>
@@ -329,20 +329,20 @@ export default function VideoFrameSelector({
               className="flex items-center gap-2"
               onClick={() => fileInputRef.current?.click()}
             >
-              <UploadIcon size={16} />
-              Upload Image
+              <UploadIcon size={20} />
+              Загрузить изображение
             </Button>
 
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
                 <Button variant="outline" className="flex items-center gap-2">
-                  <PlusIcon size={16} />
-                  Select Image
+                  <PlusIcon size={20} />
+                  Выбрать изображение
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[600px]">
                 <DialogHeader>
-                  <DialogTitle>Select an Image</DialogTitle>
+                  <DialogTitle>Выберите изображение</DialogTitle>
                 </DialogHeader>
                 <div className="flex items-center gap-2 flex-wrap overflow-y-auto max-h-80 divide-y divide-border">
                   {mediaItems

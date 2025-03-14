@@ -335,11 +335,11 @@ export function VideoTrackView({
           <div className="flex flex-row gap-1 text-sm items-center font-semibold text-white/60 w-full">
             <div className="flex flex-row truncate gap-1 items-center">
               {createElement(trackIcons[track.type], {
-                className: "w-5 h-5 text-white",
+                className: "w-6 h-6 text-white",
               } as React.ComponentProps<
                 (typeof trackIcons)[typeof track.type]
               >)}
-              <span className="line-clamp-1 truncate text-sm mb-[2px] w-full ">
+              <span className="line-clamp-1 truncate text-base mb-[2px] w-full ">
                 {media.input?.prompt || label}
               </span>
             </div>
@@ -350,7 +350,7 @@ export function VideoTrackView({
                   className="p-1 rounded hover:bg-black/5 group-hover:text-white"
                   onClick={handleOnDelete}
                 >
-                  <TrashIcon className="w-3 h-3 text-white" />
+                  <TrashIcon className="w-4 h-4 text-white" />
                 </button>
               </WithTooltip>
             </div>

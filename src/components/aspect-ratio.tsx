@@ -59,7 +59,7 @@ export function AspectRatioSelector({
       </div>
       <div className="flex aspect-square w-full items-center justify-center">
         <div className="relative flex aspect-square h-full w-full items-center justify-center">
-          <div className="text-sm tabular-nums">{value ?? "default"}</div>
+          <div className="text-sm tabular-nums">{value ?? "по умолчанию"}</div>
           {!!value && (
             <div
               className={cn(

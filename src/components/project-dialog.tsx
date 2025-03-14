@@ -109,16 +109,16 @@ export function ProjectDialog({ onOpenChange, ...props }: ProjectDialogProps) {
           <div className="flex flex-col flex-1 gap-8">
             <h2 className="text-lg font-semibold flex flex-row gap-2">
               <FileVideoIcon className="w-6 h-6 opacity-50 stroke-1" />
-              Create New Project
+              Создать новый проект
             </h2>
             <div className="flex flex-col gap-4">
               <Input
-                placeholder="Project Title"
+                placeholder="Название проекта"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
               <Textarea
-                placeholder="Describe your project"
+                placeholder="Опишите ваш проект"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 rows={6}
@@ -126,7 +126,7 @@ export function ProjectDialog({ onOpenChange, ...props }: ProjectDialogProps) {
               />
               <div>
                 <h4 className="text-xs text-muted-foreground mb-1">
-                  Aspect Ratio:
+                  Соотношение сторон:
                 </h4>
                 <div className="flex flex-row gap-2">
                   <Button
@@ -160,7 +160,7 @@ export function ProjectDialog({ onOpenChange, ...props }: ProjectDialogProps) {
                   ) : (
                     <WandSparklesIcon className="opacity-50" />
                   )}
-                  Generate
+                  Сгенерировать
                 </Button>
               </WithTooltip>
               <Button
@@ -180,14 +180,14 @@ export function ProjectDialog({ onOpenChange, ...props }: ProjectDialogProps) {
                 }
                 disabled={!title.trim() || createProject.isPending}
               >
-                {createProject.isPending ? "Creating..." : "Create Project"}
+                {createProject.isPending ? "Создание..." : "Создать проект"}
               </Button>
             </div>
           </div>
 
           <div className="flex flex-col gap-2 items-center">
             <Separator orientation="vertical" className="flex-1" />
-            <span className="font-semibold">or</span>
+              <span className="font-semibold">или</span>
             <Separator orientation="vertical" className="flex-1" />
           </div>
 
@@ -195,7 +195,7 @@ export function ProjectDialog({ onOpenChange, ...props }: ProjectDialogProps) {
           <div className="flex flex-col flex-1 gap-8">
             <h2 className="text-lg font-semibold flex flex-row gap-2">
               <FolderOpenIcon className="w-6 h-6 opacity-50 stroke-1" />
-              Open Existing Project
+              Открыть существующий проект
             </h2>
             <div className="flex flex-col gap-2 max-h-[300px] overflow-y-auto">
               {isLoading ? (
@@ -207,7 +207,7 @@ export function ProjectDialog({ onOpenChange, ...props }: ProjectDialogProps) {
                 </>
               ) : projects?.length === 0 ? (
                 <div className="text-center text-sm text-muted-foreground py-8">
-                  No projects found
+                  Проекты не найдены
                 </div>
               ) : (
                 // Project list
@@ -236,14 +236,14 @@ export function ProjectDialog({ onOpenChange, ...props }: ProjectDialogProps) {
         </div>
         <DialogFooter>
           <p className="text-muted-foreground text-sm mt-4 w-full text-center">
-            This is an{" "}
+            Это{" "}
             <a
               className="underline underline-offset-2 decoration-foreground/50 text-foreground"
               href="https://github.com/fal-ai-community/video-starter-kit"
             >
-              open-source
+              проект с открытым исходным кодом
             </a>{" "}
-            project developed by{" "}
+            разработанный{" "}
             <a
               className="underline underline-offset-2 decoration-foreground/50 text-foreground"
               href="https://fal.ai"
@@ -251,7 +251,7 @@ export function ProjectDialog({ onOpenChange, ...props }: ProjectDialogProps) {
               {" "}
               fal.ai
             </a>{" "}
-            and its partners.
+            и его партнерами.
           </p>
         </DialogFooter>
       </DialogContent>

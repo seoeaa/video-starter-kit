@@ -127,7 +127,7 @@ export default function LeftPanel() {
               <AccordionTrigger className="py-4 h-10">
                 <div className="flex flex-row items-center">
                   <h2 className="text-sm text-muted-foreground font-semibold flex-1">
-                    {project?.title || "Project Settings"}
+                    {project?.title || "Настройки проекта"}
                   </h2>
                 </div>
               </AccordionTrigger>
@@ -136,7 +136,7 @@ export default function LeftPanel() {
                   <Input
                     id="projectName"
                     name="name"
-                    placeholder="untitled"
+                    placeholder="без названия"
                     value={project.title}
                     onChange={(e) =>
                       projectUpdate.mutate({ title: e.target.value })
@@ -149,7 +149,7 @@ export default function LeftPanel() {
                   <Textarea
                     id="projectDescription"
                     name="description"
-                    placeholder="Describe your video"
+                    placeholder="Опишите ваше видео"
                     className="resize-none"
                     value={project.description}
                     rows={6}
@@ -181,7 +181,7 @@ export default function LeftPanel() {
       <div className="flex-1 py-4 flex flex-col gap-4 border-b border-border h-full overflow-hidden relative">
         <div className="flex flex-row items-center gap-2 px-4">
           <h2 className="text-sm text-muted-foreground font-semibold flex-1">
-            Gallery
+            Галерея
           </h2>
           <div className="flex gap-2">
             <DropdownMenu>
@@ -198,35 +198,35 @@ export default function LeftPanel() {
                   onClick={() => setMediaType("all")}
                 >
                   <GalleryVerticalIcon className="w-4 h-4 opacity-50" />
-                  All
+                  Все
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   className="text-sm"
                   onClick={() => setMediaType("image")}
                 >
                   <ImageIcon className="w-4 h-4 opacity-50" />
-                  Image
+                  Изображение
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   className="text-sm"
                   onClick={() => setMediaType("music")}
                 >
                   <MusicIcon className="w-4 h-4 opacity-50" />
-                  Music
+                  Музыка
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   className="text-sm"
                   onClick={() => setMediaType("voiceover")}
                 >
                   <MicIcon className="w-4 h-4 opacity-50" />
-                  Voiceover
+                  Озвучка
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   className="text-sm"
                   onClick={() => setMediaType("video")}
                 >
                   <FilmIcon className="w-4 h-4 opacity-50" />
-                  Video
+                  Видео
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -262,15 +262,15 @@ export default function LeftPanel() {
               onClick={() => openGenerateDialog()}
             >
               <SparklesIcon className="w-4 h-4 opacity-50" />
-              Generate...
+              Создать...
             </Button>
           )}
         </div>
         {!isLoading && mediaItems.length === 0 && (
           <div className="h-full flex flex-col items-center justify-center gap-4 px-4">
             <p className="text-sm text-center">
-              Create your image, audio and voiceover collection to compose your
-              videos
+              Создайте коллекцию изображений, аудио и озвучки для составления
+              ваших видео
             </p>
             <Button
               variant="secondary"
@@ -278,7 +278,7 @@ export default function LeftPanel() {
               onClick={() => openGenerateDialog()}
             >
               <ImagePlusIcon className="w-4 h-4 opacity-50" />
-              Generate...
+              Создать...
             </Button>
           </div>
         )}

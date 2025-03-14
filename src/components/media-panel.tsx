@@ -66,6 +66,37 @@ export function MediaItemRow({
           const result = await fal.queue.result(data.endpointId, {
             requestId: data.requestId,
           });
+          
+          // Проверяем, является ли результат от sync.so
+          if (data.endpointId === "fal-ai/sync-lipsync" && 
+              result.data.video && 
+              result.data.video.url && 
+              result.data.video.url.includes("api.sync.so")) {
+            
+            console.log("Получен результат от sync.so, получаем прямую ссылку на видео...");
+            
+            try {
+              // Получаем прямую ссылку на видео, следуя за перенаправлениями
+              const response = await fetch(result.data.video.url, {
+                redirect: "manual", // Не следуем за перенаправлениями автоматически
+              });
+              
+              // Получаем URL перенаправления из заголовка Location
+              const directUrl = response.headers.get("location");
+              
+              if (directUrl) {
+                console.log("Получена прямая ссылка на видео:", directUrl);
+                
+                // Обновляем URL в результате
+                result.data.video.url = directUrl;
+              } else {
+                console.warn("Не удалось получить прямую ссылку на видео");
+              }
+            } catch (error) {
+              console.error("Ошибка при получении прямой ссылки на видео:", error);
+            }
+          }
+          
           media = {
             ...data,
             output: result.data,
@@ -75,17 +106,18 @@ export function MediaItemRow({
           await db.media.update(data.id, media);
 
           toast({
-            title: "Generation completed",
-            description: `Your ${data.mediaType} has been generated successfully.`,
+            title: "Генерация завершена",
+            description: `Ваш ${data.mediaType} был успешно сгенерирован.`,
           });
-        } catch {
+        } catch (error) {
+          console.error("Ошибка при получении результата:", error);
           await db.media.update(data.id, {
             ...data,
             status: "failed",
           });
           toast({
-            title: "Generation failed",
-            description: `Failed to generate ${data.mediaType}.`,
+            title: "Генерация не удалась",
+            description: `Не удалось сгенерировать ${data.mediaType}.`,
           });
         } finally {
           await queryClient.invalidateQueries({
@@ -158,7 +190,7 @@ export function MediaItemRow({
               (coverImage ? (
                 <img
                   src={coverImage}
-                  alt="Generated media"
+                  alt="Сгенерированный медиа-контент"
                   className="h-full w-full object-cover"
                 />
               ) : (
@@ -202,7 +234,7 @@ export function MediaItemRow({
               } as React.ComponentProps<
                 (typeof trackIcons)[keyof typeof trackIcons]
               >)}
-              <span>{data.kind === "generated" ? "Job" : "File"}</span>
+              <span>{data.kind === "generated" ? "Задача" : "Файл"}</span>
               <code className="text-muted-foreground">#{mediaId}</code>
             </h3>
             {data.status !== "completed" && (
@@ -214,7 +246,9 @@ export function MediaItemRow({
                   "text-muted-foreground": data.status === "pending",
                 })}
               >
-                {data.status}
+                {data.status === "failed" ? "ошибка" : 
+                 data.status === "running" ? "выполняется" : 
+                 data.status === "pending" ? "ожидание" : data.status}
               </Badge>
             )}
           </div>
